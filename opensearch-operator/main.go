@@ -37,6 +37,7 @@ import (
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/healthz"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
+	cache "sigs.k8s.io/controller-runtime/pkg/cache"
 )
 
 var (
@@ -97,7 +98,7 @@ func main() {
 		HealthProbeBindAddress: probeAddr,
 		LeaderElection:         enableLeaderElection,
 		LeaderElectionID:       "a867c7dc.opensearch.opster.io",
-		Namespace:              watchNamespace,
+		NewCache:		cache.MultiNamespacedCacheBuilder([]string{"namespace1", "namespace2"}),
 	})
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
